@@ -6,9 +6,9 @@
 return array(
 	'default' => array(
 		'connection'  => array(
-			'dsn'        => 'mysql:host=localhost;dbname=diego',
-			'username'   => 'diego',
-			'password'   => 'S09KKjrvxwvwGEfd',
+			'dsn'        => 'mysql:host=localhost;dbname=sanwichino',
+			'username'   => 'sanwichino',
+			'password'   => 'x1RyxUyhzeUMveTO',
 		),
 	),
 );
