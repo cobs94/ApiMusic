@@ -71,7 +71,7 @@ class Controller_usuario extends Controller_Rest
 
                $this->Mensaje('200', 'usuario logueado', $jwt);
            } else {
-            $this->Mensaje('400', 'usuario invalido', $username);
+            $this->Mensaje('400', 'usuario o contraseña incorrectos', $username);
         }
     }else {
         $this->Mensaje('400', 'parametros vacios', $username);
