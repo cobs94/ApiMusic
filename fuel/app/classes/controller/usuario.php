@@ -8,7 +8,7 @@ class Controller_usuario extends Controller_Rest
     public function post_create()
     {
         $input = $_POST;
-        if (array_key_exists('username', $input)&& array_key_exists('email', $input) && array_key_exists('passwordRepeat', $input) && array_key_exists('password', $input) && array_key_exists('rol', $input)){
+        if (array_key_exists('username', $input)&& !empty($input['username']) && array_key_exists('email', $input) && !empty($input['email']) && array_key_exists('passwordRepeat', $input) && !empty($input['passwordRepeat']) && !empty($input['password']) && array_key_exists('password', $input) && array_key_exists('rol', $input)){
             $BDuser = Model_Usuarios::find('first', array(
                 'where' => array(
                     array('username', $input['username'])
