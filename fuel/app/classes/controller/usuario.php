@@ -162,8 +162,8 @@ public function post_deleteUser(){
 }
 
 public function get_recoverPassword(){
-    $email = $_GET['email'];
     try{
+        $email = $_GET['email'];
         $BDuser = Model_Usuarios::find('first', array(
             'where' => array(
                 array('email', $email)
