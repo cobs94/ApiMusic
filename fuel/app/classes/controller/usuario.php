@@ -12,13 +12,13 @@ class Controller_usuario extends Controller_Rest
             $BDuser = Model_Usuarios::find('first', array(
                 'where' => array(
                     array('username', $input['username'])
-                ),
-            ));
+                    ),
+                ));
             $BDemail = Model_Usuarios::find('first', array(
                 'where' => array(
                     array('email', $input['email'])
-                ),
-            ));
+                    ),
+                ));
             if ($input['password'] == $input['passwordRepeat']){
                 if(count($BDemail) < 1){
                     if(count($BDuser) < 1){
@@ -50,27 +50,27 @@ class Controller_usuario extends Controller_Rest
     	$password = $_GET['password'];
         if(!empty($username) && !empty($password)){
             $BDuser = Model_Usuarios::find('first', array(
-               'where' => array(
-                   array('username', $username),
-                   array('password', $password)
-               ),
-           ));
+             'where' => array(
+                 array('username', $username),
+                 array('password', $password)
+                 ),
+             ));
 
             if(count($BDuser) == 1){
-               $time = time();
-               $token = array(
+             $time = time();
+             $token = array(
                 'iat' => $time,
 	    		'data' => [ // información del usuario
                 'id' => $BDuser->id,
                 'username' => $username,
                 'password'=> $password
-            ]
-        );
+                ]
+                );
 
-               $jwt = JWT::encode($token, $this->key);
+             $jwt = JWT::encode($token, $this->key);
 
-               $this->Mensaje('200', 'usuario logueado', $jwt);
-           } else {
+             $this->Mensaje('200', 'usuario logueado', $jwt);
+         } else {
             $this->Mensaje('400', 'usuario o contraseña incorrectos', $username);
         }
     }else {
@@ -117,8 +117,8 @@ public function post_modify(){
             'where' => array(
                 array('username', $username),
                 array('password', $password)
-            ),
-        ));
+                ),
+            ));
 
         if($BDuser != null){
             $BDuser->password = $input['password'];
@@ -128,33 +128,54 @@ public function post_modify(){
             $this->Mensaje('400', 'usuario invalido', $input['username']);
         }
     } catch(Exception $e) {
-        $this->Mensaje('400', 'Error de verificacion', "aprender a programar");
+        $this->Mensaje('500', 'Error de verificacion', "aprender a programar");
     } 
 }
 
 public function post_deleteUser(){
     $jwt = apache_request_headers()['Authorization'];
+    try{
+        if(!empty($jwt)){
+            $tokenDecode = JWT::decode($jwt, $this->key , array('HS256'));
 
-    if(!empty($jwt)){
-        $tokenDecode = JWT::decode($jwt, $this->key , array('HS256'));
+            $id = $tokenDecode->data->id;
 
-        $id = $tokenDecode->data->id;
+            $BDuser = Model_Usuarios::find('first', array(
+                'where' => array(
+                    array('id', $id)
+                    ),
+                ));
+            if($BDuser != null){
 
+                $BDuser->delete();
+
+                $this->Mensaje('200', 'usuario borrado', $BDuser);
+            } else {
+                $this->Mensaje('400', 'usuario invalido', $input['username']);
+            }
+        } else {
+            $this->Mensaje('400', 'token vacio', $jwt);
+        }
+    }catch(Exception $e) {
+        $this->Mensaje('500', 'Error de verificacion', "aprender a programar");
+    } 
+}
+
+public function get_recoverPassword(){
+    $email = $_GET['email'];
+    try{
         $BDuser = Model_Usuarios::find('first', array(
             'where' => array(
-                array('id', $id)
-            ),
-        ));
+                array('email', $email)
+                ),
+            ));
         if($BDuser != null){
-
-            $BDuser->delete();
-
-            $this->Mensaje('200', 'usuario borrado', $BDuser);
+            $this->Mensaje('200', 'email correcto', $BDuser);
         } else {
-            $this->Mensaje('400', 'usuario invalido', $input['username']);
+            $this->Mensaje('400', 'email invalido', $email);
         }
-    } else {
-        $this->Mensaje('400', 'token vacio', $jwt);
+    }catch(Exception $e) {
+        $this->Mensaje('500', 'Error de servidor', "aprender a programar");
     }
 }
 
@@ -163,7 +184,7 @@ function Mensaje($code, $message, $data){
         'code' => $code,
         'message' => $message,
         'data' => $data
-    ));
+        ));
     return $json;
 }
 }
