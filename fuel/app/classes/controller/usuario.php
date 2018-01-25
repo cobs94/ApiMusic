@@ -116,19 +116,9 @@ public function post_modifyPassword(){
 
         $input = $_POST;
 
-        $BDuser = Model_Usuarios::find('first', array(
-                'where' => array(
-                    array('username', $input['username'])
-                    ),
-                ));
-
-        if($BDuser != null){
-            $BDuser->password = $input['password'];
-            $BDuser->save();
-            $this->Mensaje('200', 'usuario modificado', $input['password']);
-        } else {
-            $this->Mensaje('400', 'usuario invcorrecto', $input['username']);
-        }
+        $BDuser->password = $input['password'];
+        $BDuser->save();
+        $this->Mensaje('200', 'password modificado', $input['password']);
     } catch(Exception $e) {
         $this->Mensaje('500', 'Error de verificacion', "aprender a programar");
     } 
@@ -163,18 +153,18 @@ public function post_deleteUser(){
     } 
 }
 
-public function get_validateEmail(){
+public function get_validateUsername(){
     try{
-        $email = $_GET['email'];
+        $username = $_GET['username'];
         $BDuser = Model_Usuarios::find('first', array(
             'where' => array(
-                array('email', $email)
+                array('username', $username)
                 ),
             ));
         if($BDuser != null){
-            $this->Mensaje('200', 'email correcto', $BDuser);
+            $this->Mensaje('200', 'username correcto', $BDuser);
         } else {
-            $this->Mensaje('400', 'email incorrecto', $email);
+            $this->Mensaje('400', 'username incorrecto', $username);
         }
     }catch(Exception $e) {
         $this->Mensaje('500', 'Error de servidor', "aprender a programar");
