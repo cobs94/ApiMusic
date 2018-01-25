@@ -116,9 +116,19 @@ public function post_modifyPassword(){
 
         $input = $_POST;
 
-        $BDuser->password = $input['password'];
-        $BDuser->save();
-        $this->Mensaje('200', 'password modificado', $input['password']);
+        $BDuser = Model_Usuarios::find('first', array(
+                'where' => array(
+                    array('username', $input['username'])
+                    ),
+                ));
+
+        if($BDuser != null){
+            $BDuser->password = $input['password'];
+            $BDuser->save();
+            $this->Mensaje('200', 'usuario modificado', $input['password']);
+        } else {
+            $this->Mensaje('400', 'usuario invcorrecto', $input['username']);
+        }
     } catch(Exception $e) {
         $this->Mensaje('500', 'Error de verificacion', "aprender a programar");
     } 
