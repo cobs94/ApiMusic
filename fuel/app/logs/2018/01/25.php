@@ -9,3 +9,6 @@ ERROR - 2018-01-25 08:46:37 --> 2006 - SQLSTATE[HY000] [2006] MySQL server has g
 ERROR - 2018-01-25 08:46:58 --> 23000 - SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'alex@cev.com' for key 'email' with query: "INSERT INTO `usuarios` (`username`, `email`, `password`, `id_rol`) VALUES ('alex2', 'alex@cev.com', 'alex', '1')" in /Applications/MAMP/htdocs/proyectoss/fuel/core/classes/database/pdo/connection.php on line 253
 ERROR - 2018-01-25 08:47:08 --> 2006 - SQLSTATE[HY000] [2006] MySQL server has gone away in /Applications/MAMP/htdocs/proyectoss/fuel/core/classes/database/pdo/connection.php on line 112
 ERROR - 2018-01-25 08:49:12 --> 2006 - SQLSTATE[HY000] [2006] MySQL server has gone away in /Applications/MAMP/htdocs/proyectoss/fuel/core/classes/database/pdo/connection.php on line 112
+ERROR - 2018-01-25 10:31:43 --> Error - syntax error, unexpected ';', expecting ',' or ')' in /Applications/MAMP/htdocs/proyectoss/fuel/app/classes/controller/usuario.php on line 123
+ERROR - 2018-01-25 10:39:16 --> Error - syntax error, unexpected ';', expecting ',' or ')' in /Applications/MAMP/htdocs/proyectoss/fuel/app/classes/controller/usuario.php on line 123
+ERROR - 2018-01-25 10:41:44 --> Error - syntax error, unexpected ';', expecting ',' or ')' in /Applications/MAMP/htdocs/proyectoss/fuel/app/classes/controller/usuario.php on line 122

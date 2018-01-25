@@ -53,7 +53,6 @@ class Controller_usuario extends Controller_Rest
             $this->Mensaje('400', 'Parametros incorrectos', $input);
         }    
     }
-
     public function get_login()
     {
     	$username = $_GET['username'];
@@ -118,9 +117,10 @@ public function post_modifyPassword(){
         $input = $_POST;
 
         $BDuser = Model_Usuarios::find('first', array(
-            'where' => array(
-                array('username', $input['username']),
-            ));
+                'where' => array(
+                    array('username', $input['username'])
+                    ),
+                ));
 
         if($BDuser != null){
             $BDuser->password = $input['password'];
