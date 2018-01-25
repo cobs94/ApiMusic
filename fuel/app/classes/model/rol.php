@@ -4,6 +4,7 @@ class Model_Rol extends Orm\Model
 {
 	protected static $_table_name = 'rol';
     protected static $_properties = array('id', 'tipo');
+    protected static $_primary_key = array('id');
     protected static $_has_many = array(
 	    'usuarios' => array(
 	        'key_from' => 'id',

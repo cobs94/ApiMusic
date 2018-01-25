@@ -29,7 +29,6 @@ class usuarios
 		);
 
         \DB::query("ALTER TABLE `usuarios` ADD UNIQUE (`username`)")->execute();
-        \DB::query("ALTER TABLE `usuarios` ADD UNIQUE (`email`)")->execute();
     }
 
     function down()

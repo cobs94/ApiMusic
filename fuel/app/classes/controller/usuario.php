@@ -14,33 +14,43 @@ class Controller_usuario extends Controller_Rest
                     array('username', $input['username'])
                     ),
                 ));
-            $BDemail = Model_Usuarios::find('first', array(
-                'where' => array(
-                    array('email', $input['email'])
-                    ),
-                ));
             if ($input['password'] == $input['passwordRepeat']){
-                if(count($BDemail) < 1){
-                    if(count($BDuser) < 1){
-                        $new = new Model_Usuarios();
-                        $new->username = $input['username'];
-                        $new->email = $input['email'];
-                        $new->password = $input['password'];
-                        $new->id_rol = $input['rol'];
-                        $new->save();
+                if(count($BDuser) < 1){
+                    $new = new Model_Usuarios();
+                    $new->username = $input['username'];
+                    $new->email = $input['email'];
+                    $new->password = $input['password'];
+                    $new->id_rol = $input['rol'];
+                    $new->save();
 
-                        $this->Mensaje('200', 'usuario creado', $input);
-                    } else {
-                        $this->Mensaje('400', 'usuario ya existe', $input['username']);
-                    }
+                    $BDuser2 = Model_Usuarios::find('first', array(
+                        'where' => array(
+                            array('username', $input['username']),
+                            array('password', $input['password'])
+                            ),
+                        ));
+
+                    $time = time();
+                    $token = array(
+                        'iat' => $time,
+                            'data' => [ // información del usuario
+                                'id' => $BDuser2->id,
+                                'username' => $input['username'],
+                                'password'=> $input['password']
+                            ]
+                        );
+
+                    $jwt = JWT::encode($token, $this->key);
+
+                    $this->Mensaje('200', 'usuario creado', $jwt);
                 } else {
-                    $this->Mensaje('400', 'email ya esta en uso', $input['email']);
+                    $this->Mensaje('400', 'usuario ya esta en uso', $input['username']);
                 }
             }else {
                 $this->Mensaje('400', 'contraseñas no coinciden', $input['password']);
             }
         } else{
-            $this->Mensaje('400', 'Parametros invalidos', $input);
+            $this->Mensaje('400', 'Parametros incorrectos', $input);
         }    
     }
 
@@ -78,7 +88,7 @@ class Controller_usuario extends Controller_Rest
     }
 }
 
-/*public function get_authorization(){
+public function get_authorization(){
     $jwt = apache_request_headers()['Authorization'];
 
     $tokenDecode = JWT::decode($jwt, $this->key , array('HS256'));
@@ -97,11 +107,11 @@ class Controller_usuario extends Controller_Rest
         $users = Model_Usuarios::find('all');
         $this->Mensaje('200', 'lista de usuarios', $users);
     }else {
-        $this->Mensaje('400', 'usuario invalido', $username);
+        $this->Mensaje('400', 'usuario incorrecto', $username);
     }
-}*/
+}
 
-public function post_modify(){
+public function post_modifyPassword(){
 
     $jwt = apache_request_headers()['Authorization'];
 
@@ -125,7 +135,7 @@ public function post_modify(){
             $BDuser->save();
             $this->Mensaje('200', 'usuario modificado', $input['password']);
         } else {
-            $this->Mensaje('400', 'usuario invalido', $input['username']);
+            $this->Mensaje('400', 'usuario invcorrecto', $input['username']);
         }
     } catch(Exception $e) {
         $this->Mensaje('500', 'Error de verificacion', "aprender a programar");
@@ -151,7 +161,7 @@ public function post_deleteUser(){
 
                 $this->Mensaje('200', 'usuario borrado', $BDuser);
             } else {
-                $this->Mensaje('400', 'usuario invalido', $input['username']);
+                $this->Mensaje('400', 'usuario incorrecto', $input['username']);
             }
         } else {
             $this->Mensaje('400', 'token vacio', $jwt);
@@ -161,7 +171,7 @@ public function post_deleteUser(){
     } 
 }
 
-public function get_recoverPassword(){
+public function get_validateEmail(){
     try{
         $email = $_GET['email'];
         $BDuser = Model_Usuarios::find('first', array(
@@ -172,7 +182,7 @@ public function get_recoverPassword(){
         if($BDuser != null){
             $this->Mensaje('200', 'email correcto', $BDuser);
         } else {
-            $this->Mensaje('400', 'email invalido', $email);
+            $this->Mensaje('400', 'email incorrecto', $email);
         }
     }catch(Exception $e) {
         $this->Mensaje('500', 'Error de servidor', "aprender a programar");
