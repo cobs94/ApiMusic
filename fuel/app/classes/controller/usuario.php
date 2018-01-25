@@ -113,21 +113,13 @@ public function get_authorization(){
 
 public function post_modifyPassword(){
 
-    $jwt = apache_request_headers()['Authorization'];
-
     try{
-        $tokenDecode = JWT::decode($jwt, $this->key , array('HS256'));
-        
-        $username = $tokenDecode->data->username;
-        $password = $tokenDecode->data->password;
 
         $input = $_POST;
 
         $BDuser = Model_Usuarios::find('first', array(
             'where' => array(
-                array('username', $username),
-                array('password', $password)
-                ),
+                array('username', $input['username']),
             ));
 
         if($BDuser != null){
