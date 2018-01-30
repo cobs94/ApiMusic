@@ -108,7 +108,64 @@ public function get_allUsers(){
     }else {
         $this->Mensaje('400', 'usuario incorrecto', $username);
     }
-}
+}   
+
+public function post_modifyUser(){
+        $jwt = apache_request_headers()['Authorization'];
+        $tokenDecode = JWT::decode($jwt, $this->key , array('HS256'));
+        $id = $tokenDecode->data->id;
+        $input = $_POST;
+        $username = $input['username'];
+        $password = $input['password'];
+        $email = $input['email'];
+       
+        $BDuser = Model_Usuarios::find('first', array(
+            'where' => array(
+                array('id', $id)
+            ),
+        ));
+        if($BDuser != null){
+            
+          
+                if (empty($username) && empty($password) && !empty($email)) {
+                    $BDuser->email = $input['email'];
+                    $BDuser->save();
+                }
+                if (empty($username) && !empty($password) && empty($email)) {
+                    $BDuser->password = $input['password'];
+                    $BDuser->save();
+                }
+                if (!empty($username) && empty($password) && empty($email)) {
+                    $BDuser->username = $input['username'];
+                    $BDuser->save();
+                }
+                if (!empty($username) && !empty($password) && empty($email)) {
+                    $BDuser->username = $input['username'];
+                    $BDuser->password = $input['password'];
+                    $BDuser->save();
+                }
+                if (!empty($username) && empty($password) && !empty($email)) {
+                    $BDuser->username = $input['username'];
+                    $BDuser->email = $input['email'];
+                    $BDuser->save();
+                }
+                if (empty($username) && !empty($password) && !empty($email)) {
+                    $BDuser->email = $input['email'];
+                    $BDuser->password = $input['password'];
+                    $BDuser->save();
+                }
+                if (!empty($username) && !empty($password) && !empty($email)) {
+                    $BDuser->username = $input['username'];
+                    $BDuser->email = $input['email'];
+                    $BDuser->password = $input['password'];
+                    $BDuser->save();
+                }
+                $this->Mensaje('200', 'Usuario modificado', $BDuser);
+            
+        } else {
+            $this->Mensaje('400', 'Usuario no valido', $id);
+        }
+    }
 
 public function post_modifyPassword(){
 
