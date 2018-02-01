@@ -192,8 +192,10 @@ public function post_modifyPassword(){
 }
 
 public function post_deleteOwnUser(){
-    $jwt = apache_request_headers()['Authorization'];
+    
     try{
+            $jwt = apache_request_headers()['Authorization'];
+
         if(!empty($jwt)){
             $tokenDecode = JWT::decode($jwt, $this->key , array('HS256'));
 
@@ -221,9 +223,11 @@ public function post_deleteOwnUser(){
 }
 
 public function post_deleteUser(){
-    $jwt = apache_request_headers()['Authorization'];
+    
     //print($_POST["id"]);
     try{
+        $jwt = apache_request_headers()['Authorization'];
+        
         if(!empty($jwt)){
 
             $id = $_POST["id"];
