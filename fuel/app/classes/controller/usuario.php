@@ -127,7 +127,7 @@ public function post_modifyPassword(){
             $BDuser->save();
             $this->Mensaje('200', 'usuario modificado', $input['password']);
         } else {
-            $this->Mensaje('400', 'usuario invcorrecto', $input['username']);
+            $this->Mensaje('400', 'usuario incorrecto', $input['username']);
         }
     } catch(Exception $e) {
         $this->Mensaje('500', 'Error de verificacion', "aprender a programar");
@@ -153,7 +153,7 @@ public function post_deleteOwnUser(){
 
                 $this->Mensaje('200', 'usuario borrado', $BDuser);
             } else {
-                $this->Mensaje('400', 'usuario invalido', $input['username']);
+                $this->Mensaje('400', 'usuario invalido', $id);
             }
         } else {
             $this->Mensaje('400', 'token vacio', $jwt);
@@ -182,7 +182,7 @@ public function post_deleteUser(){
 
                 $this->Mensaje('200', 'usuario borrado', $BDuser);
             } else {
-                $this->Mensaje('400', 'usuario invalido', $input['username']);
+                $this->Mensaje('400', 'usuario invalido', $id);
             }
         } else {
             $this->Mensaje('400', 'token vacio', $jwt);
