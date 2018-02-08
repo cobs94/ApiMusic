@@ -1,17 +1,17 @@
 <?php
 namespace Fuel\Migrations;
 
-class usuariosValoran
+class poseen
 {
 
 	function up()
 	{        
-		\DBUtil::create_table('usuariosValoran', array(
-			'id_usuario' => array('type' => 'int', 'constraint' => 11),
+		\DBUtil::create_table('poseen', array(
 			'id_esquema' => array('type' => 'int', 'constraint' => 11),
-			), array('id_usuario','id_esquema'), false, 'InnoDB', 'utf8_unicode_ci',array(
+			'id_estrella' => array('type' => 'int', 'constraint' => 11),
+			), array('id_esquema','id_estrella'), false, 'InnoDB', 'utf8_unicode_ci',array(
 			array(
-				'constraint' => 'claveAjenaUsuariosValoranAEsquemas',
+				'constraint' => 'claveAjenaPoseenAEsquema',
 				'key' => 'id_esquema',
 				'reference' => array(
 					'table' => 'esquemas',
@@ -21,10 +21,10 @@ class usuariosValoran
 				'on_delete' => 'RESTRICT'
 				),
 			array(
-				'constraint' => 'claveAjenaUsuariosValoranAUsuarios',
-				'key' => 'id_usuario',
+				'constraint' => 'claveAjenaPoseenAEstrellas',
+				'key' => 'id_estrella',
 				'reference' => array(
-					'table' => 'usuarios',
+					'table' => 'estrellas',
 					'column' => 'id',
 					),
 				'on_update' => 'CASCADE',
@@ -36,6 +36,6 @@ class usuariosValoran
 
 	function down()
 	{
-		\DBUtil::drop_table('usuariosPoseen');
+		\DBUtil::drop_table('poseen');
 	}
 }

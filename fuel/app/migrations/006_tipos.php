@@ -1,20 +1,21 @@
 <?php
 namespace Fuel\Migrations;
 
-class rol
+class tipos
 {
 
     function up()
     {        
-        \DBUtil::create_table('rol', array(
+        \DBUtil::create_table('tipos', array(
                 'id' => array('type' => 'int', 'constraint' => 11, 'auto_increment' => true),
-                'tipo' => array('type' => 'varchar', 'constraint' => 100),
+                'name' => array('type' => 'varchar', 'constraint' => 100, 'null' => false),
+                'size' => array('type' => 'float', 'constraint' => 25),
             ), array('id'), false, 'InnoDB', 'utf8_unicode_ci'
         );   
     }
 
     function down()
     {
-       \DBUtil::drop_table('rol');
+       \DBUtil::drop_table('tipos');
     }
 }

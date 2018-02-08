@@ -1,9 +1,9 @@
 <?php
 
-class Model_Rol extends Orm\Model
+class Model_Roles extends Orm\Model
 {
-	protected static $_table_name = 'rol';
-    protected static $_properties = array('id', 'tipo');
+	protected static $_table_name = 'roles';
+    protected static $_properties = array('id', 'type');
     protected static $_primary_key = array('id');
     protected static $_has_many = array(
 	    'usuarios' => array(

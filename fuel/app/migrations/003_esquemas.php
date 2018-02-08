@@ -11,6 +11,7 @@ class esquemas
                 'name' => array('type' => 'varchar', 'constraint' => 100),
                 'editable' => array('type' => 'bool'),
                 'ranking' => array('type' => 'varchar', 'constraint' => 100),
+                'picture' => array('type' => 'varchar', 'constraint' => 250, 'null' => false),
             ), array('id'), false, 'InnoDB', 'utf8_unicode_ci'
         );   
     }
