@@ -11,7 +11,7 @@ class usuarios
             'username' => array('type' => 'varchar', 'constraint' => 100, 'null' => false),
             'email' => array('type' => 'varchar', 'constraint' => 100, 'null' => false),
             'password' => array('type' => 'varchar', 'constraint' => 100, 'null' => false),
-            'picture' => array('type' => 'varchar', 'constraint' => 250, 'null' => false),
+            'picture' => array('type' => 'varchar', 'constraint' => 250, 'null' => true),
             'id_rol' => array('type' => 'int', 'constraint' => 11),
         ), array('id'), false, 'InnoDB', 'utf8_unicode_ci',
                 array(

@@ -12,12 +12,12 @@ return array(
 		),
 	),
 );
-// return array(
-// 	'default' => array(
-// 		'connection'  => array(
-// 			'dsn'        => 'mysql:host=localhost:8889;dbname=spaceTerra',
-// 			'username'   => 'root',
-// 			'password'   => 'root',
-// 		),
-// 	),
-//);
+ /*return array(
+	'default' => array(
+ 		'connection'  => array(
+ 			'dsn'        => 'mysql:host=localhost;dbname=spaceTerra',
+ 			'username'   => 'alumnos',
+ 			'password'   => 'cev',
+		),
+ 	),
+);*/
