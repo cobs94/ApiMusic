@@ -26,4 +26,5 @@ class Model_Orbitas extends Orm\Model
         'cascade_save' => true,
         'cascade_delete' => false,
     )
+);
 }
