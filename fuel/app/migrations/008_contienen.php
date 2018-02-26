@@ -7,24 +7,24 @@ class contienen
 	function up()
 	{        
 		\DBUtil::create_table('contienen', array(
-			'id_orbita' => array('type' => 'int', 'constraint' => 11),
-			'id_planeta' => array('type' => 'int', 'constraint' => 11),
-			), array('id_orbita','id_planeta'), false, 'InnoDB', 'utf8_unicode_ci',array(
+			'id_lista' => array('type' => 'int', 'constraint' => 11),
+			'id_cancion' => array('type' => 'int', 'constraint' => 11),
+			), array('id_lista','id_cancion'), false, 'InnoDB', 'utf8_unicode_ci',array(
 			array(
-				'constraint' => 'claveAjenaContienenAOrbitas',
-				'key' => 'id_orbita',
+				'constraint' => 'claveAjenaContienenAListas',
+				'key' => 'id_lista',
 				'reference' => array(
-					'table' => 'orbitas',
+					'table' => 'listas',
 					'column' => 'id',
 					),
 				'on_update' => 'CASCADE',
 				'on_delete' => 'RESTRICT'
 				),
 			array(
-				'constraint' => 'claveAjenaContienenAPlanetas',
-				'key' => 'id_planeta',
+				'constraint' => 'claveAjenaContienenACanciones',
+				'key' => 'id_cancion',
 				'reference' => array(
-					'table' => 'planetas',
+					'table' => 'canciones',
 					'column' => 'id',
 					),
 				'on_update' => 'CASCADE',
