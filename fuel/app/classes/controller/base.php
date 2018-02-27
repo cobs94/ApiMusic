@@ -20,7 +20,7 @@ class Controller_Base extends Controller_Rest
             Upload::save();
             foreach(Upload::get_files() as $file)
             {
-                $object->picture = 'http://localhost:8888/ApiMusic/public/assets/img/' . $file['saved_as'];
+                $object->picture = 'http://localhost/ApiMusic/public/assets/img/' . $file['saved_as'];
                 
             }
         }

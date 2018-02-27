@@ -36,7 +36,7 @@ class Controller_usuario extends Controller_Base
                         $new->idDevice = $idDevice;
                         $new->x = $x;
                         $new->y = $y;
-                        $new->rol = 2;
+                        $new->id_rol = 2;
                         $new->save();
 
                         $time = time();
@@ -99,7 +99,7 @@ class Controller_usuario extends Controller_Base
                      ),
                  ));
 
-                if(count($BDuser) == 1){
+                if($BDuser != null){
 
                     $BDuser->idDevice = $idDevice;
                     $BDuser->x = $x;
@@ -112,8 +112,7 @@ class Controller_usuario extends Controller_Base
                         'data' => [
                             'id' => $BDuser->id,
                             'username' => $username,
-                            'password' => $password,
-                            'rol' => $BDuser->rol
+                            'password' => $password
                         ]
                     );
 
@@ -221,31 +220,38 @@ public function post_modify(){
         $id = $tokenDecode->data->id;
 
         $input = $_POST;
-        $image = $_FILES['image'];
         $password = $input['password'];
         $passwordRepeat = $input['passwordRepeat'];
         $birthday = $input["birthday"];
         $city = $input["city"];
         $description = $input["description"];
 
+        if (!empty($_FILES)) {
+            $image = $_FILES['image'];
+        }
+
         $BDuser = Model_Usuarios::find('first', array(
             'where' => array(
                 array('id', $id)
             ),
         ));
-
+       
         if($BDuser != null){
             if (array_key_exists('image', $_FILES) && !empty($image) || array_key_exists('password', $input) && !empty($password) || array_key_exists('passwordRepeat', $input) && !empty($passwordRepeat) || array_key_exists('birthday', $input) && !empty($birthday) || array_key_exists('city', $input) && !empty($city) || array_key_exists('description', $input) && !empty($description)){
 
                 if (!empty($image)) {
-                    $this->Upload($new, $image);
+                    $this->Upload($BDuser, $image);
+                    $BDuser->save();
                 }
                 if (!empty($password) && !empty($passwordRepeat) && $password == $passwordRepeat) {
+                    
                     $BDuser->password = $password;
                     $BDuser->save();
                 }else{
-                   $this->Mensaje('400', 'Las contraseñas no coinciden', $input); 
+                   $this->Mensaje('400', 'Las contraseñas no son iguales', $input);
+                   
                 }
+
                 if (!empty($birthday)) {
                     $BDuser->birthday = $birthday;
                     $BDuser->save();
@@ -279,21 +285,35 @@ public function post_delete(){
         $tokenDecode = JWT::decode($jwt, $this->key , array('HS256'));
         $id = $tokenDecode->data->id;
 
+        $input = $_POST;
+        $idUser = $input['idUser'];
+
+        var_dump($input);
         $BDuser = Model_Usuarios::find('first', array(
             'where' => array(
                 array('id', $id)
             ),
         ));
 
-        if($BDuser != null){
-            
-            $BDuser->delete();
+        $BDuser2 = Model_Usuarios::find('first', array(
+            'where' => array(
+                array('id', $idUser)
+            ),
+        ));
 
-            $this->Mensaje('200', 'Usuario borrado', $BDuser);
+        if($BDuser != null){
+            if ($BDuser2 != null) {
+                $BDuser2->delete();
+
+                $this->Mensaje('200', 'Usuario borrado', $input);
+            }else{
+                $this->Mensaje('400', 'este usuario no existe', $input);
+            }
         } else {
             $this->Mensaje('400', 'Permisos denegados', $id);
         }
     }catch(Exception $e) {
+        echo $e;
         $this->Mensaje('500', 'Error interno del servidor', $input);
     } 
 }
@@ -307,13 +327,13 @@ function post_initialSetting(){
                     )
             ));
 
-            if($userDB == null){
+            if($DBuser == null){
 
                 $new = new Model_Usuarios();
                 $new->username = 'admin';
                 $new->email = 'admin@admin.es';
                 $new->password = '1234';
-                $new->rol = 1;
+                $new->id_rol = 1;
                 $new->save();
 
                 $time = time();
@@ -335,7 +355,8 @@ function post_initialSetting(){
 
             
         }catch(Exception $e){
-            $this->Mensaje('500', 'Error de verificacion', "aprender a programar");
+            echo $e;
+            $this->Mensaje('500', 'Error interno del servidor', ' ');
         }
     }
 }

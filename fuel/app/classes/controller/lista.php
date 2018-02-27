@@ -26,7 +26,7 @@ public function post_create()
                 $BDlist = Model_Listas::find('first', array(
                     'where' => array(
                         array('title', $title),
-                        array('id_usuario', $idUser)
+                        array('id_usuario', $id)
                     ),
                 ));
 
@@ -96,10 +96,6 @@ function post_addSong(){
 
                     if($contienen == null){
 
-                        $props = array('id_list' => $id_list, 'id_song' => $id_song);
-                        $new = new Model_Contain($props);
-                        $new->save();
-
                         $new = new Model_Contienen();
                         $new->id_lista = $idList;
                         $new->id_cancion = $idSong;
@@ -121,6 +117,7 @@ function post_addSong(){
              $this->Mensaje('400', 'Permisos denegados', $input);
         }
     }catch(Exception $e){
+        echo $e;
         $this->Mensaje('500', 'Error interno del servidor', $input);
     }
 }
@@ -222,16 +219,19 @@ public function post_modify(){
 
         if($BDuser != null){
             if (array_key_exists('title', $input) && !empty($title)){
-                if($BDlist2 == null ){
+                if ($BDlist != null) {
+                    if($BDlist2 == null ){
 
-                    $BDlist->title = $title;
-                    $BDlist->save();
-                    
-                    $this->Mensaje('200', 'Lista modificada', $BDlist);
+                        $BDlist->title = $title;
+                        $BDlist->save();
+                        
+                        $this->Mensaje('200', 'Lista modificada', $BDlist);
+                    }else{
+                        $this->Mensaje('400', 'Ya hay una lista con ese titulo', $title);
+                    }
                 }else{
-                    $this->Mensaje('400', 'Ya hay una lista con ese titulo', $title);
+                    $this->Mensaje('400', 'Esta lista no existe', $title);
                 }
-            
             }else{
                 $this->Mensaje('400', 'Introduce algun parametro', $input);
             }
@@ -239,6 +239,7 @@ public function post_modify(){
             $this->Mensaje('400', 'Permisos Denegados', $id);
         }
     }catch(Exception $e) {
+        echo $e;
         $this->Mensaje('500', 'Error interno del servidor', $input);
     }
 }
@@ -267,7 +268,7 @@ public function post_delete(){
                 ),
             ));
             if ($BDlist != null) {
-                $BDsong->delete();
+                $BDlist->delete();
 
                 $this->Mensaje('200', 'Lista borrada', $BDlist);
             }else{
@@ -277,6 +278,7 @@ public function post_delete(){
             $this->Mensaje('400', 'Permisos denegados', $id);
         }
     }catch(Exception $e) {
+        echo $e;
         $this->Mensaje('500', 'Error interno del servidor', $input);
     } 
 }
@@ -301,7 +303,7 @@ public function get_ownList(){
                 ),
             ));
 
-            $this->Mensaje('200', 'listas de usuarios', $lists);
+            $this->Mensaje('200', 'listas de listas', $lists);
         }else {
             $this->Mensaje('400', 'Permisos denegados', $input);
         }

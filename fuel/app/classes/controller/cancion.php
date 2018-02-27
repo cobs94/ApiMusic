@@ -44,7 +44,7 @@ class Controller_cancion extends Controller_Base
 
                         $this->Mensaje('200', 'cancion agregada', $input);
                         
-                    } elseif ($BDsong->title == $title) {
+                    } elseif ($BDsong->title == $title && $BDsong->artist == $artist) {
                         $this->Mensaje('400', 'Esa cancion ya existe', $title);
                     }elseif ($BDsong->url == $url) {
                         $this->Mensaje('400', 'Ya hay una cancion con esta URL', $url);
@@ -82,6 +82,7 @@ public function post_playSong(){
 
         if ($BDuser != null) {
             if (array_key_exists('idSong', $input) && !empty($idSong)) {
+
                 $BDsong = Model_Canciones::find('first', array(
                     'where' => array(
                         array('id', $idSong)
@@ -90,7 +91,7 @@ public function post_playSong(){
 
                 if ($BDsong != null) {
                     $BDsong->plays += 1;
-                    $this->Mensaje('400', 'Esta cancion no existe', $BDsong);
+                    $this->Mensaje('200', 'Cancion seleccionada', $BDsong);
                 }else{
                     $this->Mensaje('400', 'Esta cancion no existe', $input);
                 }
@@ -115,7 +116,7 @@ public function post_modify(){
         $title = $input['title'];
         $artist = $input['artist'];
         $url = $input['url'];
-        $idSong = $input["id"];
+        $idSong = $input["idSong"];
 
         $BDuser = Model_Usuarios::find('first', array(
             'where' => array(
@@ -138,27 +139,30 @@ public function post_modify(){
         ));
         if($BDuser != null){
             if (array_key_exists('title', $input) && !empty($title) || array_key_exists('artist', $input) && !empty($artist) || array_key_exists('url', $input) && !empty($url)){
-                if($BDsong2 == null){
-                    if (!empty($title)) {
-                        $BDsong->title = $title;
-                        $BDsong->save();
+                if ($BDsong != null) {
+                    if($BDsong2 == null){
+                        if (!empty($title)) {
+                            $BDsong->title = $title;
+                            $BDsong->save();
+                        }
+                        if (!empty($artist)) {
+                            $BDsong->artist = $artist;
+                            $BDsong->save();
+                        }
+                        if (!empty($url)) {
+                            $BDsong->url = $url;
+                            $BDsong->save();
+                        }
+                        
+                        $this->Mensaje('200', 'Cancion modificada', $BDsong);
+                    }elseif ($BDsong2->title == $title && $BDsong2->artist == $artist) {
+                        $this->Mensaje('400', 'Esta cancion ya existe', $title);
+                    }elseif ($BDsong2->url == $url) {
+                        $this->Mensaje('400', 'Ya hay una cancion con esta url', $url);
                     }
-                    if (!empty($artist)) {
-                        $BDsong->artist = $artist;
-                        $BDsong->save();
-                    }
-                    if (!empty($url)) {
-                        $BDsong->url = $url;
-                        $BDsong->save();
-                    }
-                    
-                    $this->Mensaje('200', 'Cancion modificada', $BDsong);
-                }elseif ($BDsong2->title == $title) {
-                    $this->Mensaje('400', 'Esta cancion ya existe', $title);
-                }elseif ($BDsong2->url == $url) {
-                    $this->Mensaje('400', 'Ya hay una cancion con esta url', $url);
+                }else{
+                    $this->Mensaje('400', 'esta cancion no existe', $input);
                 }
-            
             }else{
                 $this->Mensaje('400', 'Introduce algun parametro', $input);
             }
